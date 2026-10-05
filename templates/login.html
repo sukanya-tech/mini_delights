@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Login</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="signup-page login-screen">
+	<header class="site-header">
+		<a class="brand" href="{% url 'home' %}" aria-label="Mini_Delights home">
+			<span class="brand-copy">
+				<span class="brand-name">Mini_Delights</span>
+				<span class="brand-owner">~Own By Sukanya</span>
+			</span>
+		</a>
+		{% include 'partials/site_navigation.html' %}
+	</header>
+
+	<main class="signup-layout">
+		<section class="signup-intro" aria-labelledby="login-heading">
+			<p class="signup-welcome">Welcome back</p>
+			<h1 id="login-heading">Login</h1>
+		</section>
+		<section class="signup-card" aria-labelledby="login-form-heading">
+			<h2 id="login-form-heading">Your sweet spot</h2>
+			<p class="card-note">Sign in to continue to Mini_Delights.</p>
+			{% if messages %}
+				<div class="messages" aria-live="polite">
+					{% for message in messages %}
+						<p class="message {{ message.tags }}">{{ message }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+			<form class="signup-form" action="{% url 'login-page' %}" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ request.GET.next }}">
+				<div class="field-group">
+					<label for="login-username">Username</label>
+					<input type="text" id="login-username" name="username" placeholder="Enter your username" autocomplete="username" required>
+				</div>
+				<div class="field-group">
+					<label for="login-password">Password</label>
+					<input type="password" id="login-password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+				</div>
+				<button type="submit">Login <span aria-hidden="true">→</span></button>
+			</form>
+			<p class="account-prompt">New to Mini_Delights? <a href="{% url 'register' %}?next={{ request.GET.next|urlencode }}">Create an account</a></p>
+		</section>
+	</main>
+</body>
+</html>

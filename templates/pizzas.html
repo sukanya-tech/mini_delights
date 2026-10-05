@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Pizza Menu</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="freshly-page brownie-page">
+	<main class="freshly-shell">
+		<header class="freshly-header"><a class="freshly-brand" href="{% url 'home' %}"><strong>Mini_Delights</strong><span>~Own By Sukanya</span></a>{% include 'partials/site_navigation.html' %}</header>
+		<section class="freshly-hero" aria-labelledby="pizza-title"><p class="freshly-kicker">Hot, cheesy and made to order</p><h1 id="pizza-title">Pizza Menu</h1><p>Choose a freshly baked favorite for your table.</p></section>
+		<section class="brownie-menu brownie-menu-page" aria-label="Pizza menu"><div class="brownie-options">
+			<a href="#veg" class="brownie-option"><strong>Veg Classic Pizza</strong><small>Garden vegetables and mozzarella<br><b>₹149</b></small><span>+</span></a>
+			<a href="#corn" class="brownie-option"><strong>Corn Cheese Pizza</strong><small>Sweet corn with extra cheese<br><b>₹169</b></small><span>+</span></a>
+			<a href="#chicken" class="brownie-option"><strong>Chicken Pizza</strong><small>Seasoned chicken and melted cheese<br><b>₹199</b></small><span>+</span></a>
+			<a href="#onion" class="brownie-option"><strong>Onion Pizza</strong><small>Caramelized onion and herbs<br><b>₹139</b></small><span>+</span></a>
+		</div></section>
+		<section class="brownie-note"><h2>Fresh from the oven</h2><p>Hot pizzas prepared with generous toppings and love.</p></section>
+		<footer class="freshly-footer"><span>Mini_Delights</span><span>~ Baked with love</span></footer>
+	</main>
+</body>
+</html>

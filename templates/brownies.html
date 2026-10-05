@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Brownie Menu</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="freshly-page brownie-page">
+	<main class="freshly-shell">
+		<header class="freshly-header">
+			<a class="freshly-brand" href="{% url 'home' %}">
+				<strong>Mini_Delights</strong>
+				<span>~Own By Sukanya</span>
+			</a>
+			{% include 'partials/site_navigation.html' %}
+		</header>
+
+		<section class="freshly-hero" aria-labelledby="brownie-page-title">
+			<p class="freshly-kicker">Fresh from the oven</p>
+			<h1 id="brownie-page-title">Brownie Menu</h1>
+			<p>Choose your favorite chocolate delight from our freshly baked selection.</p>
+		</section>
+
+		<section class="brownie-menu brownie-menu-page" aria-label="Brownie menu">
+			<div class="brownie-options">
+				<a href="#fudgy" class="brownie-option" id="fudgy"><strong>Fudgy Brownie</strong><small>Rich, gooey and chocolatey<br><b>₹99</b></small><span>+</span></a>
+				<a href="#cakey" class="brownie-option" id="cakey"><strong>Cakey Brownie</strong><small>Light, soft and beautifully baked<br><b>₹89</b></small><span>+</span></a>
+				<a href="#chewy" class="brownie-option" id="chewy"><strong>Chewy Brownie</strong><small>Perfectly chewy in every bite<br><b>₹109</b></small><span>+</span></a>
+				<a href="#walnut" class="brownie-option" id="walnut"><strong>Walnut Brownie</strong><small>Chocolate goodness with crunchy walnuts<br><b>₹129</b></small><span>+</span></a>
+			</div>
+		</section>
+
+		<section class="brownie-note">
+			<h2>Baked with love</h2>
+			<p>Every brownie is made in small batches for a warm, delicious bite.</p>
+		</section>
+		<footer class="freshly-footer"><span>Mini_Delights</span><span>~ Baked with love</span></footer>
+	</main>
+</body>
+</html>

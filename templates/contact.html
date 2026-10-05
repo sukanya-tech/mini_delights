@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Contact Us</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="freshly-page contact-page">
+	<main class="freshly-shell contact-shell">
+		<div class="contact-hearts" aria-hidden="true">
+			<span>♡</span><span>♡</span><span>♡</span><span>♡</span><span>♡</span>
+			<span class="little">♡</span><span class="little">♡</span><span class="little">♡</span><span class="little">♡</span>
+		</div>
+
+		<header class="freshly-header">
+			<a class="freshly-brand" href="{% url 'home' %}">
+				<strong>Mini_Delights</strong>
+				<span>~Own By Sukanya</span>
+			</a>
+			{% include 'partials/site_navigation.html' %}
+		</header>
+
+		<section class="freshly-hero" aria-labelledby="contact-title">
+			<p class="freshly-kicker">We'd love to hear from you</p>
+			<h1 id="contact-title">Contact Us</h1>
+			<p>Reach out for orders, queries, or just to say hello.</p>
+		</section>
+
+		<section class="contact-door-card" aria-label="Contact information">
+			<div class="door-arch"></div>
+			<div class="contact-info-list">
+				<div class="contact-row">
+					<span class="contact-icon">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07A19.5 19.5 0 0 1 5.15 12.8 19.86 19.86 0 0 1 2.08 4.18 2 2 0 0 1 4.05 2h3a2 2 0 0 1 2 1.72c.13.81.36 1.6.68 2.35a2 2 0 0 1-.45 2.11L8.09 9.37a16 16 0 0 0 6.54 6.54l1.19-1.19a2 2 0 0 1 2.11-.45c.75.32 1.54.55 2.35.68a2 2 0 0 1 1.72 2z"/></svg>
+					</span>
+					<div>
+						<strong>Phone</strong>
+						<p>+91 98765 43210</p>
+					</div>
+				</div>
+				<div class="contact-row">
+					<span class="contact-icon">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+					</span>
+					<div>
+						<strong>Email</strong>
+						<p>hello@minidelights.com</p>
+					</div>
+				</div>
+				<div class="contact-row">
+					<span class="contact-icon">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+					</span>
+					<div>
+						<strong>Website</strong>
+						<p>www.mini_delights.com</p>
+					</div>
+				</div>
+				<div class="contact-row">
+					<span class="contact-icon">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 6-9 13-9 13S3 16 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+					</span>
+					<div>
+						<strong>Location</strong>
+						<p>Hyderabad, India</p>
+					</div>
+				</div>
+			</div>
+			<div class="connect-with-us">
+				<h2>Connect with us!</h2>
+				<p>Follow us on social media for sweet updates and behind-the-scenes baking moments.</p>
+				<div class="social-links">
+					<span class="social-icon" aria-label="Instagram">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+					</span>
+					<span class="social-icon" aria-label="Facebook">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+					</span>
+					<span class="social-icon" aria-label="Twitter">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 12 7.5v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+					</span>
+				</div>
+			</div>
+		</section>
+
+		<footer class="freshly-footer"><span>Mini_Delights</span><span>~ Baked with love</span></footer>
+	</main>
+</body>
+</html>

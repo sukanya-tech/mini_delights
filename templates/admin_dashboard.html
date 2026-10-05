@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Admin Dashboard</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+	<style>
+		.admin-dashboard { position: relative; min-height: 100vh; overflow-x: hidden; background: #f1edff; color: #352b4a; font-family: "DM Sans", sans-serif; }
+		.admin-hearts { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+		.admin-hearts span { position: absolute; color: rgba(255, 255, 255, .78); font-size: clamp(44px, 8vw, 100px); line-height: 1; }
+		.admin-hearts span:nth-child(1) { top: 9%; left: 6%; transform: rotate(-16deg); }
+		.admin-hearts span:nth-child(2) { top: 16%; right: 8%; font-size: clamp(34px, 6vw, 72px); transform: rotate(14deg); }
+		.admin-hearts span:nth-child(3) { right: 13%; bottom: 12%; transform: rotate(-10deg); }
+		.admin-hearts span:nth-child(4) { left: 10%; bottom: 8%; font-size: clamp(32px, 5vw, 64px); transform: rotate(12deg); }
+		.admin-header, .admin-content { position: relative; z-index: 1; }
+		.admin-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px max(24px, calc((100% - 1120px) / 2)); border-bottom: 1px solid rgba(92, 71, 133, .15); background: rgba(255, 255, 255, .58); backdrop-filter: blur(8px); }
+		.admin-brand { color: #352b4a; font-family: "Playfair Display", serif; font-size: 22px; font-weight: 700; text-decoration: none; }
+		.admin-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+		.admin-nav a { color: #5a477e; font-size: 14px; font-weight: 700; text-decoration: none; }
+		.admin-nav a:hover { color: #8b64c8; }
+		.admin-content { max-width: 1240px; margin: 0 auto; padding: 48px 24px 64px; }
+		.admin-eyebrow { margin: 0 0 8px; color: #8065aa; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+		.admin-content h1 { margin: 0; font-family: "Playfair Display", serif; font-size: clamp(34px, 5vw, 52px); }
+		.admin-intro { max-width: 560px; margin: 12px 0 30px; color: #6c617e; line-height: 1.7; }
+		.admin-add-section { max-width: 720px; margin: 0 auto 44px; padding: 30px; border: 1px solid rgba(111, 87, 158, .14); border-radius: 20px; background: rgba(255, 255, 255, .94); box-shadow: 0 16px 40px rgba(74, 54, 112, .09); }
+		.admin-add-title { margin: 0 0 24px !important; text-align: center; font-size: clamp(30px, 4vw, 40px) !important; }
+		.admin-item-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+		.admin-form-field { display: flex; min-width: 0; flex-direction: column; gap: 8px; }
+		.admin-form-field-wide { grid-column: 1 / -1; }
+		.admin-upload-field { grid-column: span 2; grid-row: span 2; }
+		.admin-title-field, .admin-description-field { grid-column: span 2; }
+		.admin-form-messages { grid-column: 1 / -1; }
+		.admin-save-row { grid-column: span 1; align-items: end; }
+		.admin-form-field label { color: #594777; font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+		.admin-form-field input, .admin-form-field textarea, .admin-form-field select { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid #ddd4ee; border-radius: 10px; background: #fff; color: #352b4a; font: inherit; }
+		.admin-form-field textarea { min-height: 110px; resize: vertical; }
+		.admin-item-form input[type="file"] { min-height: 146px; padding: 20px; border-style: dashed; background: #f8f5ff; }
+		.admin-form-field input:focus, .admin-form-field textarea:focus, .admin-form-field select:focus { outline: 3px solid rgba(151, 117, 201, .2); border-color: #9875c9; }
+		.admin-field-error, .admin-form-error { color: #a42b49; font-size: 13px; }
+		.admin-form-message { margin: 0; padding: 12px 14px; border-radius: 10px; background: #f0fff5; color: #24633b; font-weight: 600; }
+		.admin-form-message.error { background: #fff0f2; color: #a42b49; }
+		.admin-save-row { display: flex; justify-content: center; padding-top: 4px; }
+		.admin-save-button { min-width: 180px; padding: 13px 24px; border: 0; border-radius: 999px; background: #72549c; color: #fff; cursor: pointer; font: inherit; font-weight: 700; }
+		.admin-save-button:hover { background: #5d4186; }
+		.admin-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-bottom: 38px; }
+		.admin-metric, .admin-control { border: 1px solid rgba(111, 87, 158, .14); border-radius: 18px; background: rgba(255, 255, 255, .9); box-shadow: 0 12px 32px rgba(74, 54, 112, .07); }
+		.admin-metric { padding: 22px; }
+		.admin-metric span { display: block; color: #726783; font-size: 14px; }
+		.admin-metric strong { display: block; margin-top: 8px; color: #46345f; font-size: 32px; }
+		.admin-section-title { margin: 0 0 16px; font-family: "Playfair Display", serif; font-size: 25px; }
+		.admin-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+		.admin-control { display: block; padding: 22px; color: inherit; text-decoration: none; transition: transform .18s ease, box-shadow .18s ease; }
+		.admin-control:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(74, 54, 112, .13); }
+		.admin-control span { display: block; margin-bottom: 8px; color: #9a7bc3; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+		.admin-control strong { display: block; margin-bottom: 7px; color: #46345f; font-family: "Playfair Display", serif; font-size: 20px; }
+		.admin-control p { margin: 0; color: #726783; font-size: 14px; line-height: 1.6; }
+		.admin-items-section { margin: 38px 0 46px; padding: 26px; border: 1px solid rgba(111, 87, 158, .14); border-radius: 20px; background: rgba(255, 255, 255, .94); box-shadow: 0 16px 40px rgba(74, 54, 112, .09); }
+		.admin-table-wrap { overflow-x: auto; border: 1px solid #e3dcf0; border-radius: 12px; background: #fff; }
+		.admin-items-table { width: 100%; min-width: 1080px; border-collapse: collapse; text-align: left; }
+		.admin-items-table th, .admin-items-table td { padding: 12px; border-bottom: 1px solid #eee9f5; vertical-align: top; }
+		.admin-items-table th { background: #f8f5fc; color: #594777; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+		.admin-items-table tr:last-child td { border-bottom: 0; }
+		.admin-items-table input:not([type="file"]), .admin-items-table select, .admin-items-table textarea { width: 100%; min-width: 88px; padding: 9px; border: 1px solid #ddd4ee; border-radius: 8px; color: #352b4a; font: inherit; }
+		.admin-items-table textarea { min-height: 76px; resize: vertical; }
+		.admin-items-table input[type="file"] { max-width: 155px; font-size: 12px; }
+		.admin-row-image { display: block; width: 58px; height: 58px; margin-bottom: 8px; object-fit: cover; border-radius: 8px; }
+		.admin-row-actions { display: flex; flex-direction: column; gap: 8px; }
+		.admin-row-actions button { padding: 9px 12px; border: 0; border-radius: 8px; background: #72549c; color: #fff; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; }
+		.admin-row-actions .admin-delete-button { background: #a8475f; }
+		.admin-items-empty { padding: 22px; color: #726783; text-align: center; }
+		@media (max-width: 620px) { .admin-header { align-items: flex-start; flex-direction: column; } .admin-content { padding: 34px 18px 48px; } .admin-add-section, .admin-items-section { padding: 22px 18px; } .admin-item-form { grid-template-columns: 1fr; } .admin-upload-field, .admin-title-field, .admin-description-field, .admin-form-field-wide, .admin-form-messages, .admin-save-row { grid-column: 1; } .admin-upload-field { grid-row: auto; } .admin-item-form input[type="file"] { min-height: 100px; } }
+	</style>
+</head>
+<body class="admin-dashboard">
+	<div class="admin-hearts" aria-hidden="true"><span>♡</span><span>♡</span><span>♡</span><span>♡</span></div>
+	<header class="admin-header">
+		<a class="admin-brand" href="{% url 'admin-dashboard' %}">Mini_Delights Admin</a>
+		{% include 'partials/site_navigation.html' %}
+	</header>
+	<main class="admin-content">
+		<p class="admin-eyebrow" style="text-align: center;">Admin control center · Welcome, {{ request.user.first_name|default:request.user.username }}</p>
+		<section class="admin-add-section" aria-labelledby="add-items-title">
+			<h1 class="admin-add-title" id="add-items-title">ADD ITEMS</h1>
+			{% if messages %}
+				<div class="admin-form-messages" aria-live="polite">
+					{% for message in messages %}<p class="admin-form-message{% if message.tags == 'error' %} error{% endif %}">{{ message }}</p>{% endfor %}
+				</div>
+			{% endif %}
+			<form class="admin-item-form" method="post" enctype="multipart/form-data" novalidate>
+				{% csrf_token %}
+				<input type="hidden" name="action" value="add_item">
+				<div class="admin-form-field admin-upload-field">
+					<label for="{{ item_form.image.id_for_label }}">UPLOAD IMAGE</label>
+					{{ item_form.image }}
+					{% for error in item_form.image.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}
+				</div>
+				<div class="admin-form-field admin-title-field">
+					<label for="{{ item_form.name.id_for_label }}">TITLE</label>
+					{{ item_form.name }}
+					{% for error in item_form.name.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}
+				</div>
+				<div class="admin-form-field admin-description-field">
+					<label for="{{ item_form.description.id_for_label }}">DESCRIPTION</label>
+					{{ item_form.description }}
+					{% for error in item_form.description.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}
+				</div>
+				<div class="admin-form-field">
+					<label for="{{ item_form.price.id_for_label }}">PRICE</label>
+					{{ item_form.price }}
+					{% for error in item_form.price.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}
+				</div>
+				<div class="admin-form-field">
+					<label for="{{ item_form.category.id_for_label }}">CATEGORY</label>
+					{{ item_form.category }}
+					{% for error in item_form.category.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}
+				</div>
+				<div class="admin-form-field">
+					<label for="{{ item_form.count.id_for_label }}">COUNT</label>
+					{{ item_form.count }}
+					{% for error in item_form.count.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}
+				</div>
+				<div class="admin-save-row"><button class="admin-save-button" type="submit">SAVE</button></div>
+				<div class="admin-form-messages">
+					{% for error in item_form.non_field_errors %}<p class="admin-form-error">{{ error }}</p>{% endfor %}
+				</div>
+			</form>
+		</section>
+		<section class="admin-items-section" aria-labelledby="items-table-title">
+			<h2 class="admin-section-title" id="items-table-title">Items · update or delete</h2>
+			<div class="admin-table-wrap">
+				<table class="admin-items-table">
+					<thead><tr><th>Image &amp; title</th><th>Description</th><th>Price</th><th>Category</th><th>Count</th><th>Update / Delete</th></tr></thead>
+					<tbody>
+						{% for row in item_rows %}
+						<tr>
+							<td>
+								{% if row.item.image %}<img class="admin-row-image" src="{{ row.item.image.url }}" alt="">{% endif %}
+								{{ row.form.name }}
+								{{ row.form.image }}
+								{% for error in row.form.name.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}
+								{% for error in row.form.image.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}
+							</td>
+							<td>{{ row.form.description }}{% for error in row.form.description.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}</td>
+							<td>{{ row.form.price }}{% for error in row.form.price.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}</td>
+							<td>{{ row.form.category }}{% for error in row.form.category.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}</td>
+							<td>{{ row.form.count }}{% for error in row.form.count.errors %}<span class="admin-field-error">{{ error }}</span>{% endfor %}</td>
+							<td>
+								<div class="admin-row-actions">
+									<form id="{{ row.form_id }}" method="post" enctype="multipart/form-data">
+										{% csrf_token %}
+										<input type="hidden" name="action" value="update_item">
+										<input type="hidden" name="item_id" value="{{ row.item.pk }}">
+									</form>
+									<button type="submit" form="{{ row.form_id }}">UPDATE</button>
+									<form method="post" onsubmit="return confirm('Delete {{ row.item.name|escapejs }}? This cannot be undone.');">
+										{% csrf_token %}
+										<input type="hidden" name="action" value="delete_item">
+										<input type="hidden" name="item_id" value="{{ row.item.pk }}">
+										<button class="admin-delete-button" type="submit">DELETE</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+						{% empty %}
+						<tr><td class="admin-items-empty" colspan="6">No items available.</td></tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</section>
+		<h2 class="admin-section-title">Store overview</h2>
+		<p class="admin-intro">Manage the Mini_Delights catalog, orders, and store accounts from one place.</p>
+
+		<section aria-label="Store overview">
+			<div class="admin-metrics">
+				<div class="admin-metric"><span>Catalog items</span><strong>{{ item_count }}</strong></div>
+				<div class="admin-metric"><span>Total orders</span><strong>{{ order_count }}</strong></div>
+				<div class="admin-metric"><span>New orders</span><strong>{{ pending_order_count }}</strong></div>
+				{% if request.user.is_superuser %}<div class="admin-metric"><span>Accounts</span><strong>{{ user_count }}</strong></div>{% endif %}
+			</div>
+		</section>
+
+		<section aria-labelledby="admin-controls-title">
+			<h2 class="admin-section-title" id="admin-controls-title">Store controls</h2>
+			<div class="admin-controls">
+				<a class="admin-control" href="{% url 'management-items' %}">
+					<span>Catalog</span><strong>Manage items</strong><p>Review products and open the item editor to update the catalog.</p>
+				</a>
+				<a class="admin-control" href="{% url 'management-orders' %}">
+					<span>Fulfillment</span><strong>Manage orders</strong><p>Review customer orders, payment status, and order details.</p>
+				</a>
+				{% if request.user.is_superuser %}
+				<a class="admin-control" href="{% url 'management-users' %}">
+					<span>Access</span><strong>Manage users</strong><p>Review accounts and staff roles. This control is limited to superusers.</p>
+				</a>
+				{% endif %}
+			</div>
+		</section>
+	</main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<nav class="home-nav" aria-label="Main navigation">
+	<a class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+	<a class="{% if request.resolver_match.url_name == 'freshly-baked' or request.resolver_match.url_name == 'brownies' or request.resolver_match.url_name == 'cupcakes' %}active{% endif %}" href="{% url 'freshly-baked' %}">Freshly Baked</a>
+	<a class="{% if request.resolver_match.url_name == 'desserts' %}active{% endif %}" href="{% url 'desserts' %}">Desserts</a>
+	<a class="{% if request.resolver_match.url_name == 'offers' or request.resolver_match.url_name == 'pizzas' %}active{% endif %}" href="{% url 'offers' %}">Offers</a>
+	<a class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact Us</a>
+	{% if user.is_staff %}<a class="{% if request.resolver_match.url_name == 'admin-dashboard' %}active{% endif %}" href="{% url 'admin-dashboard' %}">Admin dashboard</a>{% endif %}
+	{% if user.is_authenticated %}
+		<span class="nav-user">Hi, {{ user.first_name|default:user.username }}</span>
+		<a class="login-link" href="{% url 'logout' %}">Logout</a>
+	{% else %}
+		<a class="login-link {% if request.resolver_match.url_name == 'login-page' or request.resolver_match.url_name == 'register' %}active{% endif %}" href="{% url 'login-page' %}">Login</a>
+	{% endif %}
+	<a class="profile-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}" aria-label="Open profile page">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c.8-3.4 3-5.2 6.5-5.2s5.7 1.8 6.5 5.2"/></svg>
+	</a>
+	<button class="cart-link" id="cart-button" type="button" aria-expanded="false" aria-controls="cart-panel" aria-label="Open shopping cart">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L20 8H6"/><circle cx="10" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/></svg>
+		<span class="cart-count" id="cart-count">0</span>
+	</button>
+	<a class="back-home-link" href="{% url 'home' %}" aria-label="Back to Home">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V10"/></svg>
+	</a>
+</nav>

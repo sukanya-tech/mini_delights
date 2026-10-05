@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Freshly Baked</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001e">
+</head>
+<body class="freshly-page">
+	<main class="freshly-shell">
+		<header class="freshly-header">
+			<a class="freshly-brand" href="{% url 'home' %}">
+				<strong>Mini_Delights</strong>
+				<span>~Own By Sukanya</span>
+			</a>
+			{% include 'partials/site_navigation.html' %}
+		</header>
+
+		<section class="cart-panel" id="cart-panel" hidden aria-label="Shopping cart">
+			<div class="cart-panel-heading"><strong>Your cart</strong><button type="button" id="close-cart" aria-label="Close cart">&times;</button></div>
+			<p id="cart-empty">Your cart is waiting for a sweet treat.</p>
+			<a class="cart-shop-link" href="{% url 'home' %}">Back to shop <span aria-hidden="true">→</span></a>
+		</section>
+
+		<section class="freshly-hero" aria-labelledby="freshly-title">
+			<p class="freshly-kicker">Made fresh for your happiest moments</p>
+			<h1 id="freshly-title">Freshly Baked</h1>
+			<p>Choose a little delight from today’s oven-fresh menu.</p>
+		</section>
+		<div class="menu-filters" aria-label="Filter menu categories">
+			<button class="active" type="button" data-filter="all" aria-pressed="true">All</button>
+			{% for group in menu_groups %}<button type="button" data-filter="{{ group.slug }}" aria-pressed="false">{{ group.label }}</button>{% endfor %}
+		</div>
+
+		<section class="delivery-menu" aria-label="Freshly baked food menu" data-cart-category="freshly-baked">
+			{% for group in menu_groups %}
+			<div class="delivery-group" id="{{ group.slug }}" data-menu-group="{{ group.slug }}">
+				<div class="delivery-group-heading"><h2>{{ group.label }}</h2><span>{{ group.items|length }} items</span></div>
+				<div class="delivery-grid">
+					{% for item in group.items %}
+					<article class="delivery-card">
+						{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">{% elif item.image_url %}<img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy">{% endif %}
+						<div class="delivery-card-body">
+							<h3>{{ item.name }}</h3>
+							{% if item.description %}<p>{{ item.description }}</p>{% endif %}
+							<strong>₹{{ item.price|floatformat:2 }}</strong>
+							<div class="card-actions"><button type="button" data-action="add">Add to Cart</button><button type="button" class="buy-button" data-action="buy">Buy Now</button></div>
+						</div>
+					</article>
+					{% endfor %}
+				</div>
+			</div>
+			{% empty %}<p>No items available</p>
+			{% endfor %}
+		</section>
+
+		<footer class="freshly-footer"><span>Mini_Delights</span><span>~ Baked with love</span></footer>
+	</main>
+	<script>
+		const filterButtons = document.querySelectorAll("[data-filter]");
+		const menuGroups = document.querySelectorAll("[data-menu-group]");
+		filterButtons.forEach(function(button) {
+			button.addEventListener("click", function() {
+				filterButtons.forEach(function(filterButton) {
+					filterButton.classList.remove("active");
+					filterButton.setAttribute("aria-pressed", "false");
+				});
+				button.classList.add("active");
+				button.setAttribute("aria-pressed", "true");
+				const selectedFilter = button.dataset.filter;
+				menuGroups.forEach(function(group) {
+					group.hidden = selectedFilter !== "all" && group.dataset.menuGroup !== selectedFilter;
+				});
+			});
+		});
+	</script>
+	<script src="{% static 'cart.js' %}" data-cart-url="{% url 'cart-items' %}" data-login-url="{% url 'login-page' %}?next={{ request.get_full_path|urlencode }}"></script>
+</body>
+</html>

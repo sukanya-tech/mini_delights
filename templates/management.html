@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Management</title>
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+	<style>
+		.management-page { min-height: 100vh; background: #f5f7f4; color: #26352f; font-family: "DM Sans", sans-serif; }
+		.management-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px max(24px, calc((100% - 1180px) / 2)); background: #fff; border-bottom: 1px solid #dce5df; }
+		.management-header a, .management-actions a, .management-table a { color: #17664f; font-weight: 700; }
+		.management-brand { color: #26352f !important; font-family: "Playfair Display", serif; font-size: 22px; text-decoration: none; }
+		.management-nav { display: flex; flex-wrap: wrap; gap: 18px; }
+		.management-nav a { text-decoration: none; }
+		.management-content { max-width: 1180px; margin: 0 auto; padding: 36px 24px; }
+		.management-content h1 { margin: 0 0 8px; font-family: "Playfair Display", serif; font-size: 32px; }
+		.management-subtitle { margin: 0 0 26px; color: #63736b; }
+		.management-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin: 28px 0; }
+		.management-metric { padding: 20px; background: #fff; border: 1px solid #dce5df; border-radius: 6px; }
+		.management-metric span { display: block; color: #63736b; font-size: 14px; }
+		.management-metric strong { display: block; margin-top: 7px; font-size: 28px; }
+		.management-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+		.management-actions a { padding: 10px 14px; border: 1px solid #b9d2c5; border-radius: 4px; text-decoration: none; background: #fff; }
+		.management-table-wrap { overflow-x: auto; border: 1px solid #dce5df; border-radius: 6px; background: #fff; }
+		.management-table { width: 100%; border-collapse: collapse; text-align: left; }
+		.management-table th, .management-table td { padding: 13px 16px; border-bottom: 1px solid #e7ece8; white-space: nowrap; }
+		.management-table th { color: #53665c; background: #f8faf8; font-size: 13px; }
+		.management-table tr:last-child td { border-bottom: 0; }
+		.management-empty { padding: 20px; color: #63736b; }
+		@media (max-width: 620px) { .management-header { align-items: flex-start; flex-direction: column; } .management-content { padding: 28px 16px; } }
+	</style>
+</head>
+<body class="management-page">
+	<header class="management-header">
+		<a class="management-brand" href="{% url 'home' %}">Mini_Delights</a>
+		{% include 'partials/site_navigation.html' %}
+	</header>
+	<main class="management-content">
+		{% if section == 'dashboard' %}
+			<h1>Management overview</h1>
+			<p class="management-subtitle">Live totals from the Mini_Delights database.</p>
+			<div class="management-metrics">
+				<div class="management-metric"><span>Catalog items</span><strong>{{ item_count }}</strong></div>
+				<div class="management-metric"><span>Orders</span><strong>{{ order_count }}</strong></div>
+				<div class="management-metric"><span>Placed orders</span><strong>{{ pending_order_count }}</strong></div>
+				{% if request.user.is_superuser %}<div class="management-metric"><span>Accounts</span><strong>{{ user_count }}</strong></div>{% endif %}
+			</div>
+			<div class="management-actions">
+				<a href="{% url 'management-items' %}">View items</a>
+				<a href="{% url 'management-orders' %}">View orders</a>
+				{% if request.user.is_superuser %}<a href="{% url 'management-users' %}">Manage users</a>{% endif %}
+			</div>
+		{% elif section == 'items' %}
+			<h1>Items</h1>
+			<p class="management-subtitle">Catalog records currently stored in the database.</p>
+			<div class="management-actions"><a href="{{ admin_add_url }}">Add item</a><a href="{{ admin_list_url }}">Open item editor</a></div>
+			<div class="management-table-wrap"><table class="management-table"><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Availability</th><th></th></tr></thead><tbody>
+				{% for item in items %}<tr><td>{{ item.name }}</td><td>{{ item.category }}</td><td>{{ item.price }}</td><td>{{ item.count }}</td><td>{{ item.is_available|yesno:"Available,Unavailable" }}</td><td><a href="{% url 'admin:app_item_change' item.pk %}">Edit</a></td></tr>{% empty %}<tr><td colspan="6" class="management-empty">No catalog items found.</td></tr>{% endfor %}
+			</tbody></table></div>
+		{% elif section == 'orders' %}
+			<h1>Orders</h1>
+			<p class="management-subtitle">Orders and current statuses from the database.</p>
+			<div class="management-actions"><a href="{{ admin_add_url }}">Add order</a><a href="{{ admin_list_url }}">Open order editor</a></div>
+			<div class="management-table-wrap"><table class="management-table"><thead><tr><th>Tracking ID</th><th>Customer</th><th>Status</th><th>Payment</th><th>Total</th><th>Placed</th><th></th></tr></thead><tbody>
+				{% for order in orders %}<tr><td>{{ order.tracking_id }}</td><td>{{ order.user.get_username }}</td><td>{{ order.get_status_display }}</td><td>{{ order.get_payment_status_display }}</td><td>{{ order.total_price }}</td><td>{{ order.order_date|date:"Y-m-d H:i" }}</td><td><a href="{% url 'admin:app_order_change' order.pk %}">Edit</a></td></tr>{% empty %}<tr><td colspan="7" class="management-empty">No orders found.</td></tr>{% endfor %}
+			</tbody></table></div>
+		{% elif section == 'users' %}
+			<h1>Users</h1>
+			<p class="management-subtitle">Account records and staff role assignments.</p>
+			<div class="management-actions"><a href="{{ admin_add_url }}">Add user</a><a href="{{ admin_list_url }}">Open user editor</a></div>
+			<div class="management-table-wrap"><table class="management-table"><thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Active</th><th></th></tr></thead><tbody>
+				{% for account in accounts %}<tr><td>{{ account.username }}</td><td>{{ account.email|default:"-" }}</td><td>{% if account.is_superuser %}Superuser{% elif account.is_staff %}Staff{% else %}Customer{% endif %}</td><td>{{ account.is_active|yesno:"Yes,No" }}</td><td><a href="{% url 'admin:auth_user_change' account.pk %}">Edit</a></td></tr>{% empty %}<tr><td colspan="5" class="management-empty">No accounts found.</td></tr>{% endfor %}
+			</tbody></table></div>
+		{% endif %}
+	</main>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini_Delights | Special Offers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="offers-page">
+    <main class="offers-shell">
+        <div class="offers-hearts" aria-hidden="true">
+            <span>♡</span><span>♡</span><span>♡</span><span>♡</span><span>♡</span>
+        </div>
+
+        <header class="freshly-header">
+            <a class="freshly-brand" href="{% url 'home' %}">
+                <strong>Mini_Delights</strong>
+                <span>~Own By Sukanya</span>
+            </a>
+            {% include 'partials/site_navigation.html' %}
+        </header>
+
+        <section class="cart-panel" id="cart-panel" hidden aria-label="Shopping cart">
+            <div class="cart-panel-heading"><strong>Your cart</strong><button type="button" id="close-cart" aria-label="Close cart">&times;</button></div>
+            <p id="cart-empty">Your cart is waiting for a sweet treat.</p>
+            <a class="cart-shop-link" href="{% url 'home' %}">Back to shop <span aria-hidden="true">→</span></a>
+        </section>
+
+        <section class="freshly-hero offers-hero" aria-labelledby="offers-title">
+            <p class="freshly-kicker">Sweet deals for happy cravings</p>
+            <h1 id="offers-title">Offers</h1>
+            <p>Enjoy delightful treats with irresistible discounts on your favorite picks.</p>
+        </section>
+
+        <section class="offers-grid" aria-label="Store offers" data-cart-category="offers">
+            {% for offer in offers %}
+            <article class="offer-card {% if forloop.counter0 == 0 %}brown-offer{% elif forloop.counter0 == 1 %}pizza-offer{% else %}dessert-offer{% endif %}">
+                <div class="offer-visual {% if forloop.counter0 == 0 %}brownie-visual{% elif forloop.counter0 == 1 %}pizza-visual{% else %}dessert-visual{% endif %}" aria-hidden="true">
+                    <div class="offer-badge">{{ offer.discount|floatformat:0 }}% OFF</div>
+                    <span class="Visual-emoji">{% if forloop.counter0 == 0 %}🍫{% elif forloop.counter0 == 1 %}🍕{% else %}🍰{% endif %}</span>
+                </div>
+                <div class="offer-content">
+                    {% if offer.label %}<p class="offer-label">{{ offer.label }}</p>{% endif %}
+                    <h2>{{ offer.item.name }}</h2>
+                    <div class="offer-pricing">
+                        <span class="offer-price">₹{{ offer.discounted_price|floatformat:0 }}</span>
+                        <span class="normal-price">₹{{ offer.item.price|floatformat:0 }}</span>
+                    </div>
+                    <p class="offer-note">{{ offer.description }}</p>
+                    <div class="offer-actions">
+                        <button type="button" data-action="add">Add to Cart</button>
+                        <button type="button" class="buy-btn" data-action="buy">Buy Now</button>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <p class="offer-note">There are no active offers right now.</p>
+            {% endfor %}
+        </section>
+
+        <footer class="freshly-footer"><span>Mini_Delights</span><span>~ Baked with love</span></footer>
+    </main>
+    <script src="{% static 'cart.js' %}" data-cart-url="{% url 'cart-items' %}" data-login-url="{% url 'login-page' %}?next={{ request.get_full_path|urlencode }}"></script>
+</body>
+</html>

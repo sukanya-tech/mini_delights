@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Create an account</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="signup-page">
+	<div class="heart-field" aria-hidden="true">
+		<span class="heart heart-one">♡</span>
+		<span class="heart heart-two">♡</span>
+		<span class="heart heart-three">♡</span>
+		<span class="heart heart-four">♡</span>
+		<span class="heart heart-five">♡</span>
+		<span class="cupcake cupcake-one">🧁</span>
+		<span class="cupcake cupcake-two">🧁</span>
+		<span class="bakery-item cookie-one">🍪</span>
+		<span class="bakery-item donut-one">🍩</span>
+	</div>
+	<header class="site-header">
+		<div class="header-brand-group">
+			<a class="brand" href="{% url 'home' %}" aria-label="Mini_Delights home">
+				<span class="brand-mark" aria-hidden="true">
+					<svg viewBox="0 0 48 48" role="img">
+						<path d="M11 24h26l-2 14H13L11 24Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+						<path d="M14 24c-2.2 0-3.5-1.5-3.1-3.2.3-1.4 1.5-2.4 3-2.4.3-3.2 2.5-5.2 5.1-5.2 1.9 0 3.7 1.1 4.5 2.7.9-1.6 2.6-2.7 4.5-2.7 2.6 0 4.8 2 5.1 5.2 1.5 0 2.7 1 3 2.4.4 1.7-.9 3.2-3.1 3.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.2"/>
+						<path d="M18 30h12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.2"/>
+					</svg>
+				</span>
+				<span class="brand-copy">
+					<span class="brand-name">Mini_Delights</span>
+					<span class="brand-owner">Own By Sukanya</span>
+				</span>
+			</a>
+		</div>
+		<span class="header-love">~BAKED WITH LOVE<span class="homemade-line"><span class="accent-dot">.</span>Purely HomeMade</span></span>
+	{% include 'partials/site_navigation.html' %}
+	</header>
+
+	<main class="signup-layout">
+		<section class="signup-intro" aria-labelledby="signup-heading">
+			<p class="signup-welcome">WELCOME BACK</p>
+			<h1 id="signup-heading">MINI_DELIGHTS</h1>
+		</section>
+
+		<section class="signup-card" aria-labelledby="form-heading">
+			<h2 id="form-heading">Personal info</h2>
+			<p class="card-note">Join our little circle of delightful moments.</p>
+			{% if messages %}
+				<div class="messages" aria-live="polite">
+					{% for message in messages %}
+						<p class="message {{ message.tags }}">{{ message }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+			<form class="signup-form" action="{% url 'register' %}" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="next" value="{{ request.GET.next }}">
+				<div class="field-group">
+					<label for="register-username">Username</label>
+					<input type="text" id="register-username" name="username" placeholder="Choose a username" autocomplete="username" required>
+				</div>
+				<div class="field-group">
+					<label for="register-email">Email Address</label>
+					<input type="email" id="register-email" name="email" placeholder="you@example.com" autocomplete="email" required>
+				</div>
+				<div class="field-group">
+					<label for="register-password">Password</label>
+					<input type="password" id="register-password" name="password" placeholder="Create a password" autocomplete="new-password" required minlength="8">
+				</div>
+				<div class="field-group">
+					<label for="register-confirm">Confirm Password</label>
+					<input type="password" id="register-confirm" name="confirm_password" placeholder="Re-enter your password" autocomplete="new-password" required minlength="8">
+				</div>
+				<button type="submit">Register now <span aria-hidden="true">→</span></button>
+			</form>
+			<p class="account-prompt">Already have an account? <a href="{% url 'login-page' %}">Login</a></p>
+		</section>
+	</main>
+
+	<footer class="page-footer">Made with love by <strong>mini_delights</strong></footer>
+</body>
+</html>

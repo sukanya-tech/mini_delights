@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Cupcakes Menu</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="freshly-page brownie-page">
+	<main class="freshly-shell">
+		<header class="freshly-header"><a class="freshly-brand" href="{% url 'home' %}"><strong>Mini_Delights</strong><span>~Own By Sukanya</span></a>{% include 'partials/site_navigation.html' %}</header>
+		<section class="freshly-hero" aria-labelledby="cupcake-title"><p class="freshly-kicker">Soft, sweet and freshly frosted</p><h1 id="cupcake-title">Cupcakes Menu</h1><p>Pick your favorite little celebration cake.</p></section>
+		<section class="brownie-menu brownie-menu-page" aria-label="Cupcakes menu"><div class="brownie-options">
+			<a href="#chocolate" class="brownie-option"><strong>Chocolate Cupcakes</strong><small>Deep chocolate sponge with cream<br><b>₹79</b></small><span>+</span></a>
+			<a href="#vanilla" class="brownie-option"><strong>Vanilla Cupcake</strong><small>Classic vanilla with silky frosting<br><b>₹69</b></small><span>+</span></a>
+			<a href="#strawberry" class="brownie-option"><strong>Strawberry Cupcakes</strong><small>Berry sponge with pink frosting<br><b>₹89</b></small><span>+</span></a>
+			<a href="#customize" class="brownie-option"><strong>Customize Cupcakes</strong><small>Your flavor, colors and toppings<br><b>₹119</b></small><span>+</span></a>
+		</div></section>
+		<section class="brownie-note"><h2>Baked with love</h2><p>Freshly frosted in small batches for every celebration.</p></section>
+		<footer class="freshly-footer"><span>Mini_Delights</span><span>~ Baked with love</span></footer>
+	</main>
+</body>
+</html>

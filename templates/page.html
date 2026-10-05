@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Freshly Baked Delights</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001d">
+</head>
+	<body class="home-page">
+	<main class="home-shell">
+		<div class="home-hearts" aria-hidden="true"><span>♡</span><span>♡</span><span>♡</span><span>♡</span></div>
+		<header class="home-header">
+			<a class="home-brand" href="{% url 'home' %}" aria-label="Mini_Delights home">
+				<span class="home-brand-name">Mini_Delights</span>
+				<span class="home-brand-owner">~Own By Sukanya</span>
+			</a>
+			{% include 'partials/site_navigation.html' %}
+		</header>
+		<section class="cart-panel" id="cart-panel" hidden aria-label="Shopping cart">
+			<div class="cart-panel-heading"><strong>Your cart</strong><button type="button" id="close-cart" aria-label="Close cart">&times;</button></div>
+			<p id="cart-empty">Your cart is waiting for a sweet treat.</p>
+			<a class="cart-shop-link" href="#freshly-baked">Shop freshly baked treats <span aria-hidden="true">→</span></a>
+		</section>
+
+		<section class="home-hero" id="home" aria-labelledby="home-title">
+			<div class="hero-copy">
+				<p class="welcome-back">Welcome Back</p>
+				<p class="hero-kicker">Baked fresh, shared with love</p>
+				<h1 id="home-title">Mini_Delights</h1>
+				<p class="hero-description">Tiny treats, big happiness. Discover homemade cakes, fudgy brownies and little moments worth celebrating.</p>
+				<p class="baked-love">~ Baked with love</p>
+				<div class="hero-links">
+					<a class="primary-link" href="{% url 'desserts' %}">Order now <span aria-hidden="true">→</span></a>
+					<a class="secondary-link" href="#special-items">Explore more</a>
+				</div>
+			</div>
+			<div class="hero-art" aria-label="Animated cute cartoon blueberry cake illustration" role="img">
+				<div class="white-strawberry white-strawberry-one"></div>
+				<div class="white-strawberry white-strawberry-two"></div>
+				<div class="white-strawberry white-strawberry-three"></div>
+				<svg class="cake-vector" viewBox="0 0 420 420" role="presentation">
+					<ellipse cx="210" cy="365" rx="125" ry="18" fill="#eadfea"/>
+					<path d="M105 205h210l-25 142c-3 17-17 29-34 29h-92c-17 0-31-12-34-29Z" fill="#f5b6cb" stroke="#c39ab9" stroke-width="5"/>
+					<path d="M120 236h180M126 275h168M132 314h156" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="8" opacity=".8"/>
+					<path d="M88 211c0-48 39-82 80-67 18-51 87-51 105 0 43-16 80 19 80 67 0 23-19 41-42 41H130c-23 0-42-18-42-41Z" fill="#fff" stroke="#c9b4cc" stroke-width="5"/>
+					<path d="M151 159c13-34 60-37 78 0 20-30 67-19 70 20-19-12-39 5-58-9-19-14-33 10-53-2-19-12-30 3-48-9 2 0 7 0 11 0Z" fill="#e5ecfb"/>
+					<g fill="#7088c5" stroke="#5169a5" stroke-width="4">
+						<circle cx="179" cy="137" r="25"/><circle cx="224" cy="119" r="27"/><circle cx="273" cy="140" r="25"/>
+					</g>
+					<g fill="#dfe8ff"><circle cx="171" cy="129" r="6"/><circle cx="216" cy="110" r="6"/><circle cx="265" cy="132" r="6"/></g>
+					<g fill="#8cae86"><path d="M224 94l-15-24 26 16 18-14-11 28Z"/><path d="M177 111l-20-18 28 8 13-21 2 27Z"/><path d="M274 115l-11-23 23 16 19-10-14 24Z"/></g>
+					<circle cx="168" cy="226" r="7" fill="#8298d0"/><circle cx="210" cy="235" r="7" fill="#8298d0"/><circle cx="254" cy="224" r="7" fill="#8298d0"/>
+					<circle cx="178" cy="287" r="5" fill="#fff"/><circle cx="244" cy="300" r="5" fill="#fff"/>
+					<path d="M174 181q12 10 24 0M222 181q12 10 24 0" fill="none" stroke="#899bc9" stroke-linecap="round" stroke-width="4"/>
+				</svg>
+			</div>
+		</section>
+		<section class="treat-strip" id="freshly-baked" aria-label="Featured treats">
+			<div><span class="treat-icon">✿</span><strong>Freshly baked</strong><small>Every single morning</small></div>
+			<div id="desserts"><span class="treat-icon">♡</span><strong>Cakes & brownies</strong><small>Made for your moments</small></div>
+			<div id="offers"><span class="treat-icon">✦</span><strong>Sweet offers</strong><small>A little extra delight</small></div>
+		</section>
+
+		<section class="special-items" id="special-items" aria-labelledby="special-title" data-cart-category="home">
+			<div class="special-hero">
+				<p class="freshly-kicker">Handpicked just for you</p>
+				<h2 id="special-title">Our Mini_Delights Special Items</h2>
+				<p class="special-subtitle">The most loved treats from our kitchen — order your favorite now.</p>
+			</div>
+			<div class="special-grid">
+				{% for item in featured_items %}
+				<article class="delivery-card">
+					{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">{% elif item.image_url %}<img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy">{% endif %}
+					<div class="delivery-card-body">
+						<div class="delivery-header-row"><h3>{{ item.name }}</h3><span class="mini-heart" aria-hidden="true">♡</span></div>
+						{% if item.description %}<p>{{ item.description }}</p>{% endif %}
+						<strong>₹{{ item.price|floatformat:2 }}</strong>
+						<div class="card-actions">
+							<button type="button" data-action="add" class="cart-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L20 8H6"/><circle cx="10" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/></svg> Add to Cart</button>
+							<button type="button" class="buy-button" data-action="buy">Buy Now</button>
+						</div>
+					</div>
+				</article>
+				{% empty %}<p>No items available</p>
+				{% endfor %}
+			</div>
+		</section>
+
+		<footer class="home-footer" id="contact"><span>Mini_Delights</span><span>Questions? <a href="{% url 'contact' %}">Contact us</a></span><span>© 2026 ~Own By Sukanya</span></footer>
+	</main>
+	<script src="{% static 'cart.js' %}" data-cart-url="{% url 'cart-items' %}" data-login-url="{% url 'login-page' %}?next={{ request.get_full_path|urlencode }}"></script>
+</body>
+</html>

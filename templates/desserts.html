@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | Desserts</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="freshly-page desserts-page">
+	<main class="freshly-shell">
+		<header class="freshly-header">
+			<a class="freshly-brand" href="{% url 'home' %}">
+				<strong>Mini_Delights</strong>
+				<span>~Own By Sukanya</span>
+			</a>
+			{% include 'partials/site_navigation.html' %}
+		</header>
+
+		<section class="cart-panel" id="cart-panel" hidden aria-label="Shopping cart">
+			<div class="cart-panel-heading"><strong>Your cart</strong><button type="button" id="close-cart" aria-label="Close cart">&times;</button></div>
+			<p id="cart-empty">Your cart is waiting for a sweet treat.</p>
+			<a class="cart-shop-link" href="{% url 'home' %}">Back to shop <span aria-hidden="true">→</span></a>
+		</section>
+
+		<section class="freshly-hero" aria-labelledby="desserts-title">
+			<p class="freshly-kicker">Sweet little moments</p>
+			<h1 id="desserts-title">Desserts</h1>
+			<p>Soft, indulgent treats that feel like a hug in every bite.</p>
+		</section>
+
+		<section class="delivery-menu dessert-menu" aria-label="Desserts menu" data-cart-category="desserts">
+			<div class="delivery-grid">
+				{% for item in dessert_items %}
+				<article class="delivery-card">
+					{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">{% elif item.image_url %}<img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy">{% endif %}
+					<div class="delivery-card-body">
+						<h3>{{ item.name }}</h3>
+						{% if item.description %}<p>{{ item.description }}</p>{% endif %}
+						<strong>₹{{ item.price|floatformat:2 }}</strong>
+						<div class="card-actions">
+							<button type="button" data-action="add">Add to Cart</button>
+							<button type="button" class="buy-button" data-action="buy">Buy Now</button>
+						</div>
+					</div>
+				</article>
+				{% empty %}
+				<p>No items available</p>
+				{% endfor %}
+			</div>
+		</section>
+
+		<footer class="freshly-footer"><span>Mini_Delights</span><span>~ Baked with love</span></footer>
+	</main>
+	<script src="{% static 'cart.js' %}" data-cart-url="{% url 'cart-items' %}" data-login-url="{% url 'login-page' %}?next={{ request.get_full_path|urlencode }}"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mini_Delights | My Profile</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'style.css' %}?v=20261001b">
+</head>
+<body class="signup-page profile-screen">
+	<header class="site-header">
+		<a class="brand" href="{% url 'home' %}" aria-label="Mini_Delights home">
+			<span class="brand-copy">
+				<span class="brand-name">Mini_Delights</span>
+				<span class="brand-owner">~Own By Sukanya</span>
+			</span>
+		</a>
+		{% include 'partials/site_navigation.html' %}
+	</header>
+
+	<main class="profile-layout">
+		<section class="profile-intro" aria-labelledby="profile-heading">
+			<p class="signup-welcome">Your sweet profile</p>
+			<h1 id="profile-heading">My Profile</h1>
+			<p>Keep your details ready for every delightful order.</p>
+		</section>
+
+		<section class="profile-card" aria-labelledby="profile-form-heading">
+			<div class="profile-card-heading">
+				<div>
+					<p class="profile-kicker">Account details</p>
+					<h2 id="profile-form-heading">Personal information</h2>
+				</div>
+				<button class="profile-edit" id="profile-edit" type="button">Edit</button>
+			</div>
+
+			{% if messages %}
+				<div class="messages" aria-live="polite">
+					{% for message in messages %}
+						<p class="message {{ message.tags }}">{{ message }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			<form class="profile-form" id="profile-form" action="{% url 'profile' %}" method="post">
+				{% csrf_token %}
+				<div class="field-group">
+					<label for="profile-name">Name</label>
+					<input id="profile-name" name="name" type="text" value="{{ profile_name }}" placeholder="Enter your name" readonly>
+				</div>
+				<div class="field-group">
+					<label for="profile-email">Email Address</label>
+					<input id="profile-email" name="email" type="email" value="{{ profile_email }}" placeholder="you@example.com" readonly>
+				</div>
+				<div class="field-group">
+					<label for="profile-phone">Phone Number</label>
+					<input id="profile-phone" name="phone" type="tel" value="{{ profile_phone }}" placeholder="Enter your phone number" readonly>
+				</div>
+				<button class="profile-save" id="profile-save" type="submit" hidden>Save changes</button>
+			</form>
+		</section>
+	</main>
+
+	<script>
+		const editButton = document.querySelector("#profile-edit");
+		const saveButton = document.querySelector("#profile-save");
+		const profileFields = document.querySelectorAll("#profile-form input");
+
+		editButton.addEventListener("click", () => {
+			profileFields.forEach((field) => field.removeAttribute("readonly"));
+			editButton.hidden = true;
+			saveButton.hidden = false;
+			profileFields[0].focus();
+		});
+	</script>
+</body>
+</html>
